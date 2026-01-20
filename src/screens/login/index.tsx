@@ -11,6 +11,7 @@ export function LoginScreen() {
     <ImageBackground
       source={require("../../assets/images/logo.png")}
       resizeMode="cover"
+      defaultSource={require("../../assets/images/logo.png")}
       imageStyle={{ bottom: -200 }}
       style={styles.imageContainer}
     >
