@@ -52,7 +52,7 @@ export function LoginScreen() {
             secureTextEntry
           />
 
-          <Button title="Confirmar" onPress={handleSignIn} />
+          <Button title="Entrar" onPress={handleSignIn} />
 
           <Text style={styles.textConditions}>
             Ao prosseguir, você concorda com nossos{" "}

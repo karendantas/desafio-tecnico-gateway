@@ -6,3 +6,19 @@ export const GET_USER = gql`
     email
   }
 `;
+
+export const GET_ENTERPRISES = gql`
+  query getEnterprises($filter: EnterpriseFilter) {
+    enterprises(filter: $filter) {
+      id
+      name
+      listingType
+      price
+      gallery
+      user {
+        id
+        name
+      }
+    }
+  }
+`;

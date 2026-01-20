@@ -1,9 +1,5 @@
-import { Text } from "react-native";
+import { Home } from "@/screens/home";
 
 export default function Index() {
-  return (
-    <>
-      <Text> HOme</Text>
-    </>
-  );
+  return <Home />;
 }
