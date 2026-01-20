@@ -1,12 +1,28 @@
-import { ImageBackground, Text, View } from "react-native";
+import { Alert, ImageBackground, Text, View } from "react-native";
 import { styles } from "./styles";
 
 import IconGateway from "@/assets/icons/icon.svg";
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
+import { useAuth } from "@/hooks/useAuth";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
+import { useState } from "react";
 export function LoginScreen() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login, isLoading } = useAuth();
+
+  async function handleSignIn() {
+    if (!email || !password) {
+      Alert.alert("Atenção", "Preencha todos os campos");
+      return;
+    }
+
+    try {
+      await login(email, password);
+    } catch (error) {}
+  }
   return (
     <ImageBackground
       source={require("../../assets/images/logo.png")}
@@ -24,10 +40,19 @@ export function LoginScreen() {
         <IconGateway />
 
         <View style={styles.formContainer}>
-          <Input placeholder="Digite seu nome" />
-          <Input placeholder="Digite sua senha" />
+          <Input
+            placeholder="Digite seu email"
+            onChangeText={setEmail}
+            value={email}
+          />
+          <Input
+            placeholder="Senha"
+            onChangeText={setPassword}
+            value={password}
+            secureTextEntry
+          />
 
-          <Button title="Confirmar" onPress={() => {}} />
+          <Button title="Confirmar" onPress={handleSignIn} />
 
           <Text style={styles.textConditions}>
             Ao prosseguir, você concorda com nossos{" "}

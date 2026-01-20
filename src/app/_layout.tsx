@@ -1,5 +1,7 @@
 import { AuthProvider } from "@/contexts/AuthContext";
 import { useAuth } from "@/hooks/useAuth";
+import { apolloClient } from "@/lib/apollo";
+import { ApolloProvider } from "@apollo/client/react";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
@@ -29,8 +31,10 @@ export function RootLayout() {
 }
 export default function Layout() {
   return (
-    <AuthProvider>
-      <RootLayout />
-    </AuthProvider>
+    <ApolloProvider client={apolloClient}>
+      <AuthProvider>
+        <RootLayout />
+      </AuthProvider>
+    </ApolloProvider>
   );
 }
