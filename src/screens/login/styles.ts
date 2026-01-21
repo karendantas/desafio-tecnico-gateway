@@ -16,12 +16,19 @@ export const styles = StyleSheet.create({
     flex: 1,
     position: "absolute",
     inset: 0,
+    zIndex: 1,
+  },
+  errorText: {
+    color: "#E53935",
+    fontSize: 12,
+    marginTop: 4,
   },
   formContainer: {
     flex: 1,
     width: "100%",
     gap: 16,
     paddingTop: 90,
+    zIndex: 99,
   },
   textConditions: {
     color: "white",

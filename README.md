@@ -1,50 +1,82 @@
-# Welcome to your Expo app 👋
+# Desafio Gateway
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Este repositório contém a solução do desafio técnico da **Digital Gateway**.
 
-## Get started
+## Como rodar
 
-1. Install dependencies
+1. Clone o repositório
+
+   ```bash
+      https://github.com/karendantas/desafio-tecnico-gateway.git
+   ```
+
+2. Instale as dependências
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Start the app
 
    ```bash
    npx expo start
    ```
+   
+## Observação importante!
 
-In the output, you'll find options to open the app in a
+No primeiro carregamento do app pode aparecer o erro abaixo.
+Caso isso aconteça, basta recarregar o aplicativo.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Esse erro vem do Android, que ainda não oferece suporte nativo ao BlurView.
+Para alcançar o efeito visual do Figma, utilizei a prop experimental: `experimentalBlurMethod="dimezisBlurView"`
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+![alt text](image.png)
 
-## Get a fresh project
+## Demonstração
 
-When you're ready, run:
 
-```bash
-npm run reset-project
-```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+https://github.com/user-attachments/assets/7a136325-e8b8-48be-83b8-1e464d3a6875
 
-## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
+## Decisões técnicas
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Sobre a autenticação
 
-## Join the community
+- Utilização de um AuthContext para centralizar:
+  - login
+  - logout
+  - cadastro
+  - dados do usuário
+  - gerenciamento de token
+  - Armazenamento de dados sensíveis com expo-secure-store, por ser mais seguro que o async-storage.
 
-Join our community of developers creating universal apps.
+- Redirecionamento e proteção de rotas feitos no \_layout.tsx, separando:
+  - telas públicas (auth)
+  - telas privadas (app)
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Comunicação com a API
+
+- Utilização do Apollo Client, biblioteca recomendada para GraphQL, com excelente suporte ao React Native.
+- Uso de useQuery e useMutation para gerenciamento automático, loading e erros.
+
+- Tratativas de erros
+  - Usei os metodos de OnCompleted e OnError que o próprio apollo oferece para criar
+    Alerts de sucesso ou erro.
+
+- Estados de loading e telas de carregamento para melhor usabilidade para o usuário
+
+- Componentes e estilizações
+  Optei pelo `StyleSheet` padrão do React Native.
+
+  Em projetos maiores ou em bare workflow, libs como `react-native-unistyles` podem ser adotadas para melhor performance e escalabilidade dos estilos.
+
+## O que faria com mais tempo
+
+- Melhorar validação de formulários usando zod + react-hook-form
+- Melhorar usabilidade com KeyboardAvoidingView
+- Buscar alternativas mais estáveis para efeitos de blur no Android
+- Refinar o grid de imagens
+- Criar um theme de cores para melhor padronização visual
+- Melhorar listas vazias
+- Melhorar efeitos visuais de loading

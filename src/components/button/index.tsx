@@ -1,22 +1,39 @@
 import { BlurView } from "expo-blur";
-import { Pressable, StyleSheet, Text } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableOpacityProps,
+} from "react-native";
 import { styles } from "./styles";
 
-interface ButtonProps {
+interface ButtonProps extends TouchableOpacityProps {
   title: string;
   onPress: () => void;
+  variant?: "primary" | "secondary";
 }
 
-export function Button({ title, onPress }: ButtonProps) {
+export function Button({
+  title,
+  onPress,
+  variant = "primary",
+  ...rest
+}: ButtonProps) {
   return (
-    <Pressable onPress={onPress} style={styles.wrapper}>
-      <BlurView
-        experimentalBlurMethod="dimezisBlurView"
-        intensity={75}
-        tint="dark"
-        style={StyleSheet.absoluteFill}
-      />
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.wrapper, styles[variant]]}
+      {...rest}
+    >
+      {variant === "primary" && (
+        <BlurView
+          experimentalBlurMethod="dimezisBlurView"
+          intensity={75}
+          tint="dark"
+          style={StyleSheet.absoluteFill}
+        />
+      )}
       <Text style={styles.text}>{title}</Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
