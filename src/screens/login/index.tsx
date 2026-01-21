@@ -1,4 +1,4 @@
-import { Alert, ImageBackground, Text, View } from "react-native";
+import { ImageBackground, Text, View } from "react-native";
 import { styles } from "./styles";
 
 import IconGateway from "@/assets/icons/icon.svg";
@@ -11,17 +11,38 @@ import { useState } from "react";
 export function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isLoading } = useAuth();
 
-  async function handleSignIn() {
-    if (!email || !password) {
-      Alert.alert("Atenção", "Preencha todos os campos");
-      return;
+  const [errors, setErrors] = useState<{
+    email?: string;
+    password?: string;
+  }>({});
+
+  const { login, isSigningIn } = useAuth();
+
+  function validateForm() {
+    const newErrors: typeof errors = {};
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email || !emailRegex.test(email)) {
+      newErrors.email = "Email inválido";
     }
 
-    try {
-      await login(email, password);
-    } catch (error) {}
+    if (!password || password.trim().length < 3) {
+      newErrors.password = "Senha deve ter no mínimo 3 caracteres";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  }
+  async function handleSignIn() {
+    setErrors({});
+
+    const isValid = validateForm();
+    if (!isValid) return;
+
+    await login(email, password);
   }
   return (
     <ImageBackground
@@ -45,14 +66,21 @@ export function LoginScreen() {
             onChangeText={setEmail}
             value={email}
           />
+          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
           <Input
             placeholder="Senha"
             onChangeText={setPassword}
             value={password}
             secureTextEntry
           />
-
-          <Button title="Entrar" onPress={handleSignIn} />
+          {errors.password && (
+            <Text style={styles.errorText}>{errors.password}</Text>
+          )}
+          <Button
+            title={isSigningIn ? "Entrando..." : "Entrar"}
+            onPress={handleSignIn}
+            disabled={isSigningIn}
+          />
 
           <Text style={styles.textConditions}>
             Ao prosseguir, você concorda com nossos{" "}

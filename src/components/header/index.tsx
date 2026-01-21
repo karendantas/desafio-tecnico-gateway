@@ -38,11 +38,12 @@ export function Header({
       </HeaderButtonBase>
 
       {notificationsShown ? (
-        <HeaderButtonBase>
+        <HeaderButtonBase onPress={onPressNotifications}>
+          <View style={styles.notificationPop} />
           <Bell />
         </HeaderButtonBase>
       ) : (
-        <HeaderButtonBase>
+        <HeaderButtonBase onPress={onPressEdit}>
           <Edit />
         </HeaderButtonBase>
       )}

@@ -1,50 +1,62 @@
-# Welcome to your Expo app 👋
+# Desafio Gateway
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Esse repositório contém a solução do desafio técnico da Digital Gateway.
 
-## Get started
+## Como rodar
 
-1. Install dependencies
+1. Clone o repositório
+   ```bash
+      https://github.com/karendantas/desafio-tecnico-gateway.git
+   ```
+2. Instale as dependências
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Start the app
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+4. Se no primerio load do app aparecer esse erro, basta dar reload no app.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Esse erro vem do Android, que ainda não tem suporte ao BlurView, e o uso experimental do efeito vem através da prop `experimentalBlurMethod="dimezisBlurView`, que não é recomendada para produção. Mas para alcançar os efeitos visuais do figma deixei ativo.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+![alt text](image.png)
 
-## Get a fresh project
+## Demonstração
 
-When you're ready, run:
+## Decisões técnicas
 
-```bash
-npm run reset-project
-```
+- Sobre a autenticação
+  Utilizo sempre um `AuthContext` para agrupar as funções, de cadastro, login, logout, dados do usuários e armazenamento de tokens. Para tornar o acesso a esses métodos disponível em qualquer tela/componente.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+  Utilizo o "expo-secure-storage" para guardar dados sensíveis como os tokens de auteticação, pois é mais seguro que o "async-storage"
 
-## Learn more
+  Redirecionamentos no \_layout.tsx do app, usando o Stack.Protected, que permite proteger as telas privadas e deixar telas de auth públicas.
 
-To learn more about developing your project with Expo, look at the following resources:
+- Comunicação com a API
+  Utilizei a lib "apollo" que é a mais recomendada para Graphql e possui uma aba dedicada ao react native na documentação
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- Tratativas de erros
+  Usei os metodos de OnCompleted e OnError que o próprio apollo oferece para criar
+  Alerts de sucesso ou erro.
 
-## Join the community
+  Estados de loading e telas de carregamento para melhor usabilidade para o usuário
 
-Join our community of developers creating universal apps.
+- Componentes e estilizações
+  Normalmente prefiro usar o stylesheet padrão, pois a medida que o projeto cresce e se torna "bare workflow" que seria criar um ambiente de desenvolvimento personalizado, libs como "react-native-unistyles" podem ser utilizadas para aumentar perfomance dos styles.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## O que faria com mais tempo
+
+- Melhorias nos formularios. Pra esse projeto decidi usar estados e regex simples para validar os campos dos formulários. Mas o ideal é combinar zod e `react-hook-form`
+
+- Melhorar a vsibilidade dos formulários com `KeyboardAvoidingView` quando o teclado esta ativo
+
+- Buscar outra alternativa para os efeitos de Blur no Android
+
+- Melhorar Grids das imagens
+
+- Criar um theme de cores para melhor padronização do tema.

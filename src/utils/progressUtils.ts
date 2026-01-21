@@ -1,8 +1,8 @@
 export function calculateProgress(
-  title: String,
-  listingType: String,
-  value: String,
-  images: String[],
+  title: string,
+  listingType: string,
+  value: string,
+  images: string[],
 ) {
   let completed = 0;
 

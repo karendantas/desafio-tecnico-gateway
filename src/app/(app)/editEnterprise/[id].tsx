@@ -1,6 +1,6 @@
 import { GetEnterpriseResponse } from "@/@types/graphql";
 import { GET_ENTERPRISE } from "@/graphql/queries";
-import EnterpriseDetail from "@/screens/enterpriseDetail";
+import { EditEnterprise } from "@/screens/editEnterprise";
 import { useQuery } from "@apollo/client/react";
 import { useLocalSearchParams } from "expo-router";
 
@@ -14,5 +14,5 @@ export default function EnterpriseDetailScreen() {
   });
 
   if (!data) return;
-  return <EnterpriseDetail data={data} />;
+  return <EditEnterprise data={data} />;
 }

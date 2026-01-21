@@ -17,4 +17,12 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  notificationPop: {
+    backgroundColor: "red",
+    width: 6,
+    height: 6,
+    borderRadius: 99,
+    top: -5,
+    left: 20,
+  },
 });

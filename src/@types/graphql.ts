@@ -8,15 +8,25 @@ export interface LoginResponse {
 }
 
 export interface EnterpriseInput {
-  id: String;
-  name: String;
+  id: string;
+  name: string;
   listingType: "RENT" | "SALE";
   price: number;
-  gallery: String[];
+  gallery: string[];
+  user: User;
+}
+export interface CreateEnterpriseInput {
+  name: string;
+  listingType: "RENT" | "SALE";
+  price: number;
+  gallery: string[];
 }
 
 export interface GetEnterprisesResponse {
   enterprises: EnterpriseInput[];
+}
+export interface GetEnterpriseResponse {
+  enterprise: EnterpriseInput;
 }
 
 export interface EnterpriseFilter {

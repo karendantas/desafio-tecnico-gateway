@@ -1,4 +1,5 @@
 import {
+  Alert,
   DimensionValue,
   Image,
   Text,
@@ -14,47 +15,43 @@ import { RadioButton } from "@/components/radioButton";
 import { useEffect, useState } from "react";
 
 import AddCircle from "@/assets/icons/add-circle.svg";
-import { CREATE_ENTERPRISE } from "@/graphql/mutations";
+import { UPDATE_ENTERPRISE } from "@/graphql/mutations";
 import { pickImages } from "@/utils/imagePicker";
 import { calculateProgress } from "@/utils/progressUtils";
+
+import { GetEnterpriseResponse } from "@/@types/graphql";
 import { useMutation } from "@apollo/client/react";
 import { useNavigation } from "expo-router";
 
-export function AddNewEnterprise() {
-  const [listingType, setListingType] = useState<"RENT" | "SALE">("SALE");
-  const [title, setTitle] = useState("");
-  const [value, setValue] = useState("0.0");
-  const [images, setImages] = useState<string[]>([]);
-
+export function EditEnterprise({ data }: { data: GetEnterpriseResponse }) {
   const navigation = useNavigation();
+
+  const [listingType, setListingType] = useState<"RENT" | "SALE">(
+    data.enterprise.listingType,
+  );
+  const [title, setTitle] = useState(data.enterprise.name);
+  const [value, setValue] = useState(data.enterprise.price.toString());
+  const [images, setImages] = useState<string[]>(data.enterprise.gallery);
+
   const TOTAL_STEPS = 4;
 
   const [errors, setErrors] = useState<{
     title?: string;
     value?: string;
     images?: string;
-    api?: string;
   }>({});
 
   const [formProgress, setFormProgress] = useState<DimensionValue>("25%");
 
-  const [createEnterprise, { loading }] = useMutation(CREATE_ENTERPRISE, {
+  const [updateEnterprise, { loading }] = useMutation(UPDATE_ENTERPRISE, {
     onError(error) {
-      setErrors((prev) => ({
-        ...prev,
-        api: error.message,
-      }));
+      Alert.alert("Não foi possível alterar imóvel", error.message);
     },
     onCompleted() {
       navigation.goBack();
     },
     refetchQueries: ["GetEnterprises"],
   });
-
-  const progressPercentage = () => {
-    const completed = calculateProgress(title, listingType, value, images);
-    return `${(completed / TOTAL_STEPS) * 100}%` as DimensionValue;
-  };
 
   function validateForm() {
     const newErrors: typeof errors = {};
@@ -71,110 +68,85 @@ export function AddNewEnterprise() {
       newErrors.images = "Adicione pelo menos uma imagem";
     }
 
-    if (images.length > 10) {
-      newErrors.images = "Você pode adicionar no máximo 10 imagens";
-    }
-
     setErrors(newErrors);
-
     return Object.keys(newErrors).length === 0;
   }
 
-  async function createNewEnterprise() {
+  async function handleUpdateEnterprise() {
     setErrors({});
+    if (!validateForm()) return;
 
-    const isValid = validateForm();
-    if (!isValid) return;
-    await createEnterprise({
+    await updateEnterprise({
       variables: {
+        id: data.enterprise.id,
         input: {
           name: title,
-          listingType: listingType,
-          price: value,
+          listingType,
+          price: Number(value),
           gallery: images,
         },
       },
     });
   }
-  function addImage(uri: string) {
-    if (images.length >= 10) {
-      setErrors((prev) => ({
-        ...prev,
-        images: "Limite máximo de 10 imagens",
-      }));
-      return;
-    }
 
-    setImages((prev) => [...prev, uri]);
-  }
   async function handlePickImages() {
-    try {
-      const newImages = await pickImages({
-        currentImages: images,
-        maxImages: 10,
-      });
-
-      setImages(newImages);
-      setErrors((prev) => ({ ...prev, images: undefined }));
-    } catch (error: any) {
-      setErrors((prev) => ({
-        ...prev,
-        images: error.message,
-      }));
-    }
+    const newImages = await pickImages({
+      currentImages: images,
+      maxImages: 10,
+    });
+    setImages(newImages);
   }
 
   useEffect(() => {
-    setFormProgress(progressPercentage());
+    const completed = calculateProgress(title, listingType, value, images);
+    setFormProgress(`${(completed / TOTAL_STEPS) * 100}%`);
   }, [title, listingType, value, images]);
+
+  if (loading) return null;
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Back color="#000000" onPress={navigation.goBack} />
-        <Text style={styles.headerText}> Adicionar imóvel</Text>
+        <Back onPress={navigation.goBack} />
+        <Text style={styles.headerText}>Editar imóvel</Text>
       </View>
 
       <View style={{ width: "100%" }}>
-        <View style={[styles.progressLevel, { width: formProgress }]}></View>
-        <View style={styles.progress}></View>
+        <View style={[styles.progressLevel, { width: formProgress }]} />
+        <View style={styles.progress} />
       </View>
 
       <View style={styles.formContainer}>
         <View style={styles.formItem}>
-          <Text style={styles.formText}>Título do anúncio</Text>
-          <Input
-            placeholder="Título"
-            value={title}
-            onChangeText={(v) => {
-              setTitle(v);
-            }}
-          />
+          <Text style={styles.formText}>Título</Text>
+          <Input value={title} onChangeText={setTitle} />
           {errors.title && <Text style={styles.errorText}>{errors.title}</Text>}
         </View>
+
         <View style={styles.radioContent}>
           <RadioButton
-            value="SALE"
             label="Venda"
+            value="SALE"
             selected={listingType === "SALE"}
             onPress={() => setListingType("SALE")}
           />
-
           <RadioButton
-            value="RENT"
             label="Aluguel"
+            value="RENT"
             selected={listingType === "RENT"}
             onPress={() => setListingType("RENT")}
           />
         </View>
+
         <View style={styles.formItem}>
-          <Text style={styles.formText}>Valor de venda</Text>
-          <Input placeholder="R$ 0,00" value={value} onChangeText={setValue} />
+          <Text style={styles.formText}>Valor</Text>
+          <Input value={value} onChangeText={setValue} />
           {errors.value && <Text style={styles.errorText}>{errors.value}</Text>}
         </View>
 
         <View style={styles.formItem}>
-          <Text style={styles.formText}>Galeria (0/10)</Text>
+          <Text style={styles.formText}>Galeria ({images.length}/10)</Text>
+
           <View style={styles.imagesWrapper}>
             {images.length < 10 && (
               <TouchableOpacity
@@ -184,10 +156,10 @@ export function AddNewEnterprise() {
                 <AddCircle />
               </TouchableOpacity>
             )}
+
             {images.map((uri, index) => (
               <View key={index} style={styles.imagePreview}>
                 <Image source={{ uri }} style={styles.image} />
-
                 <TouchableOpacity
                   style={styles.removeImage}
                   onPress={() =>
@@ -205,12 +177,10 @@ export function AddNewEnterprise() {
           )}
         </View>
 
-        {errors.api && <Text style={styles.errorText}>{errors.api}</Text>}
-
         <Button
           variant="secondary"
-          title={loading ? "Publicando..." : "Publicar imóvel"}
-          onPress={createNewEnterprise}
+          title={loading ? "Salvando..." : "Salvar alterações"}
+          onPress={handleUpdateEnterprise}
         />
       </View>
     </View>

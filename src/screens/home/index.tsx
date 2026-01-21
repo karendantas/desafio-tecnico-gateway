@@ -9,39 +9,38 @@ import HomeLine from "@/assets/icons/home-line.svg";
 import { EnterpriseInput, GetEnterprisesResponse } from "@/@types/graphql";
 import { AddEnterpriseCard } from "@/components/addEnterpriseCard";
 import { EnterpriseCard } from "@/components/enterpriseCard";
+import { Loading } from "@/components/loading";
 import { GET_ENTERPRISES } from "@/graphql/queries";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@apollo/client/react";
+import { useMemo } from "react";
 
 type EnterpriseListItem = {
   type: string;
   data?: EnterpriseInput;
 };
 export function Home() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const navigation = useNavigation();
 
-  const { data } = useQuery<GetEnterprisesResponse>(GET_ENTERPRISES);
+  const { data, loading } = useQuery<GetEnterprisesResponse>(GET_ENTERPRISES);
   const enterprises = data?.enterprises ?? [];
-  console.log(data);
+
+  const myEnterprises = useMemo(() => {
+    if (!enterprises || !user) return [];
+
+    return enterprises.filter((enterprise) => enterprise.user.id === user.id);
+  }, [enterprises, user]);
+
   const dataList: EnterpriseListItem[] = [
     { type: "add" },
-    {
-      type: "card",
-      data: {
-        id: "1",
-        name: "teste",
-        listingType: "RENT",
-        price: 29,
-        gallery: [],
-      },
-    },
-    ...enterprises.map((item) => ({
+    ...myEnterprises.map((item) => ({
       type: "card",
       data: item,
     })),
   ];
 
+  if (loading) return <Loading />;
   return (
     <>
       <LinearGradient
@@ -49,10 +48,7 @@ export function Home() {
         style={styles.gradient}
       />
       <View style={styles.container}>
-        <Header
-          notificationsShown={true}
-          onPressBack={() => navigation.goBack()}
-        />
+        <Header notificationsShown={true} onPressBack={logout} />
 
         <View style={styles.userHighlight}>
           <Image source={require("@/assets/images/profile.png")} />
@@ -69,12 +65,12 @@ export function Home() {
             data={dataList}
             numColumns={2}
             keyExtractor={(item, index) => item.data?.name + index.toString()}
-            renderItem={({ item }) => {
+            renderItem={({ item, index }) => {
               if (item.type === "add") {
                 return <AddEnterpriseCard />;
               }
 
-              return <EnterpriseCard data={item.data!} />;
+              return <EnterpriseCard data={item.data!} number={index} />;
             }}
             showsVerticalScrollIndicator={false}
             columnWrapperStyle={styles.row}

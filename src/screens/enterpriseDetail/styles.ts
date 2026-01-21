@@ -6,17 +6,21 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 42,
     backgroundColor: "#fff",
+    width: "100%",
   },
   gradient: {
     height: 500,
+    width: "100%",
     position: "absolute",
     inset: 0,
     zIndex: 1,
+    pointerEvents: "none",
   },
   headerContainer: {
     zIndex: 3,
     marginHorizontal: 24,
     position: "absolute",
+
     top: 10,
   },
   imageContainer: {
@@ -75,6 +79,11 @@ export const styles = StyleSheet.create({
   galleryText: {
     fontSize: 16,
     fontWeight: 700,
+  },
+  moneyText: {
+    fontSize: 12,
+    fontWeight: 400,
+    color: "#07070779",
   },
   grid: {
     width: "100%",

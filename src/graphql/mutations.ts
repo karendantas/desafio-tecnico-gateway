@@ -14,7 +14,7 @@ export const SIGNIN = gql`
 `;
 
 export const CREATE_ENTERPRISE = gql`
-  mutation CreateEnterprise($input: Enterpriseinput!) {
+  mutation CreateEnterprise($input: EnterpriseInput!) {
     createEnterprise(input: $input) {
       id
       name
@@ -26,7 +26,7 @@ export const CREATE_ENTERPRISE = gql`
 `;
 
 export const UPDATE_ENTERPRISE = gql`
-  mutation UpdateEnterprise($id: ID!, $input: Enterpriseinput!) {
+  mutation UpdateEnterprise($id: ID!, $input: EnterpriseInput!) {
     updateEnterprise(id: $id, input: $input) {
       id
       name

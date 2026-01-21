@@ -18,6 +18,11 @@ export const styles = StyleSheet.create({
     inset: 0,
     zIndex: 1,
   },
+  errorText: {
+    color: "#E53935",
+    fontSize: 12,
+    marginTop: 4,
+  },
   formContainer: {
     flex: 1,
     width: "100%",
