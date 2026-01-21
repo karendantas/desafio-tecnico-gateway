@@ -41,14 +41,11 @@ export default function EnterpriseDetail({
         <View style={styles.imageContainer}>
           <ImageCarousel images={gallery} />
           <LinearGradient
-            colors={["rgba(7, 7, 7, 0)", "#010101"]}
+            colors={["transparent", "#010101c3"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
             style={styles.gradient}
           />
-          {/* <Image
-            source={{ uri: mainImage.toString() }}
-            style={{ height: 500, width: "100%" }}
-            resizeMode="cover"
-          /> */}
 
           <View style={styles.rentBadge}>
             <BlurView
