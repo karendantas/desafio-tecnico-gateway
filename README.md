@@ -33,7 +33,7 @@ No primeiro carregamento do app pode aparecer o erro abaixo.
 Caso isso aconteça, basta recarregar o aplicativo.
 
 Esse erro vem do Android, que ainda não oferece suporte nativo ao BlurView.
-Para alcançar o efeito visual do Figma, utilizei a prop experimental: `experimentalBlurMethod="dimezisBlurView"`
+Para alcançar o efeito visual do Figma, utilizei a prop experimental: `experimentalBlurMethod="dimezisBlurView"`. (O que não é recomendado em produção, mas validar igual ao figma optei por deixar ativo)
 
 ![alt text](image.png)
 
@@ -63,7 +63,7 @@ https://github.com/user-attachments/assets/7a136325-e8b8-48be-83b8-1e464d3a6875
 ### Comunicação com a API
 
 - Utilização do Apollo Client, biblioteca recomendada para GraphQL, com excelente suporte ao React Native.
-- Uso de useQuery e useMutation para gerenciamento automático, loading e erros.
+- Uso de useQuery e useMutation para gerenciament de loading e erros.
 
 - Tratativas de erros
   - Usei os metodos de OnCompleted e OnError que o próprio apollo oferece para criar
