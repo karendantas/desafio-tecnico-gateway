@@ -21,6 +21,11 @@ Este repositório contém a solução do desafio técnico da **Digital Gateway**
    ```bash
    npx expo start
    ```
+4. Adicione um `.env` com a url
+   
+   ```bash
+   EXPO_PUBLIC_GRAPHQL_URL=url_API
+   ```
    
 ## Observação importante!
 
