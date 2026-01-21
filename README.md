@@ -21,8 +21,8 @@ Este repositório contém a solução do desafio técnico da **Digital Gateway**
    ```bash
    npx expo start
    ```
-
-4. Observação importante!.
+   
+## Observação importante!
 
 No primeiro carregamento do app pode aparecer o erro abaixo.
 Caso isso aconteça, basta recarregar o aplicativo.
@@ -33,6 +33,11 @@ Para alcançar o efeito visual do Figma, utilizei a prop experimental: `experime
 ![alt text](image.png)
 
 ## Demonstração
+
+
+
+https://github.com/user-attachments/assets/7a136325-e8b8-48be-83b8-1e464d3a6875
+
 
 ## Decisões técnicas
 
@@ -73,3 +78,5 @@ Para alcançar o efeito visual do Figma, utilizei a prop experimental: `experime
 - Buscar alternativas mais estáveis para efeitos de blur no Android
 - Refinar o grid de imagens
 - Criar um theme de cores para melhor padronização visual
+- Melhorar listas vazias
+- Melhorar efeitos visuais de loading
