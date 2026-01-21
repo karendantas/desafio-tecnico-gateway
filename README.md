@@ -83,5 +83,5 @@ https://github.com/user-attachments/assets/7a136325-e8b8-48be-83b8-1e464d3a6875
 - Buscar alternativas mais estáveis para efeitos de blur no Android
 - Refinar o grid de imagens
 - Criar um theme de cores para melhor padronização visual
-- Melhorar listas vazias
-- Melhorar efeitos visuais de loading
+- Melhorar efeitos visuais de loading e listas vazias
+- Usar `zustand` para controle de estados globais e storage
