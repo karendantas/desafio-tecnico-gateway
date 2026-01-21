@@ -23,9 +23,19 @@ export function Home() {
 
   const { data } = useQuery<GetEnterprisesResponse>(GET_ENTERPRISES);
   const enterprises = data?.enterprises ?? [];
-  console.log(enterprises);
+  console.log(data);
   const dataList: EnterpriseListItem[] = [
     { type: "add" },
+    {
+      type: "card",
+      data: {
+        id: "1",
+        name: "teste",
+        listingType: "RENT",
+        price: 29,
+        gallery: [],
+      },
+    },
     ...enterprises.map((item) => ({
       type: "card",
       data: item,

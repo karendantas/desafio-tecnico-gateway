@@ -12,3 +12,35 @@ export const SIGNIN = gql`
     }
   }
 `;
+
+export const CREATE_ENTERPRISE = gql`
+  mutation CreateEnterprise($input: Enterpriseinput!) {
+    createEnterprise(input: $input) {
+      id
+      name
+      listingType
+      price
+      gallery
+    }
+  }
+`;
+
+export const UPDATE_ENTERPRISE = gql`
+  mutation UpdateEnterprise($id: ID!, $input: Enterpriseinput!) {
+    updateEnterprise(id: $id, input: $input) {
+      id
+      name
+      listingType
+      price
+      gallery
+    }
+  }
+`;
+
+export const DELETE_ENTERPRISE = gql`
+  mutation DeleteEnterprise($id: ID!) {
+    deleteEnterprise(id: $id) {
+      id
+    }
+  }
+`;

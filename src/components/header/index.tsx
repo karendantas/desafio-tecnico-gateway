@@ -34,7 +34,7 @@ export function Header({
   return (
     <View style={styles.container}>
       <HeaderButtonBase onPress={onPressBack}>
-        <Back />
+        <Back color={"#fff"} />
       </HeaderButtonBase>
 
       {notificationsShown ? (
